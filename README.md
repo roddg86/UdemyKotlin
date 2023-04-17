@@ -498,6 +498,8 @@ val filteredUsersStandart = users.filter { it.name[0] == 'K' }
 
 this - получить ссылку на сам объект у которого вызвана функция.  
 
+:: - операторо получает ссылку на функцию, создает ссылку на элемент или ссылку на класс, [ключевые слова и операторы](https://kotlinlang.ru/docs/reference/keyword-reference.html)
+
 Инкапсуляция - это скрытие внутренней реализации объекта. 
 
 Пример описания объекта(модели):
@@ -552,6 +554,71 @@ employee1.projects.add("Новый проект")
 ```
 ---
 #### 13. Что такое наследование
+
+Наследование - позволяет избавится от дублирования кода
+
+open - модификатор открытого класса, означает что от него можно наследоваться
+
+классы наследники обязаны инициализировать все поля супер класса.
+
+Базовый класс, супер класс
+
+```kotlin
+open class Employee(
+        val name: String,
+        val salary: Int
+) {
+    private val projects: MutableList<String> = mutableListOf<String>()
+
+    fun addProject(projectName: String) {
+        projects.add(projectName)
+        println("Сотрудник ${name}: начал работу над проектом $projectName")
+    }
+
+    fun printAllProjects() {
+        println("Проекты сотрудника $name: ${projects.joinToString()}")
+    }
+}
+```
+
+Наследники супер класса, поля передаются в конструктор,
+значение полей будут получены снаружи и передадутся в конструктор супер класса
+```kotlin
+class Programmer(name: String, salary: Int): Employee(name,salary){
+    fun readArticle(articleName: String) {
+        println("Программист $name: читаю статью $articleName")
+    }
+}
+```
+
+```kotlin
+class Manager(name: String, salary: Int): Employee(name,salary){
+    fun callToClient(articleName: String) {
+        println("Менеджер $name: звоню клиенту $articleName")
+    }
+}
+```
+
+Создание объекта, и вызов унаследованных функций
+```kotlin
+    val programmer1 = Programmer("Kirill", 233454)
+    val programmer2 = Programmer("Kirill", 233664)
+
+    programmer1.readArticle("article")
+    programmer1.printAllProjects()
+    programmer1.addProject("project1")
+    programmer1.addProject("project2")
+    programmer2.addProject("project3")
+
+    val employees = listOf<Employee>(programmer1, programmer2, manager1)
+    for(employee in employees)
+        employee.addProject("Общий проект")
+
+    for(employee in employees)
+        employee.printAllProjects()
+
+
+```
 
 
 
