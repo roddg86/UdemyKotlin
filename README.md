@@ -620,9 +620,85 @@ class Manager(name: String, salary: Int): Employee(name,salary){
 
 ```
 
+#### 14. Абстрактные классы, полиморфизм
 
+Полиморфизм - это когда какая-то функция описанная в базовом классе без реализации,
+а реализация у каждого класса наследника своя.
 
+abstract модификатор, функция не имеет реализации, 
+поэтому любой наследник может реализовать функцию по своему, 
+заголовок один реализация разная
 
+если в классе есть хоть одна абстрактная функция то и весь класс тоже становится абстрактным
+
+если класс абстрактный значит от него кто-то будет наследоватся
+
+обьекты абстрактных классов создавать нельзя
+
+override модификатор переопределения функции
+
+protected модификатор, значит функция доступна всем наследникам но не доступна никому за пределами класса
+
+```kotlin
+abstract class Employee(
+        val name: String,
+        val salary: Int
+) {
+    private val projects: MutableList<String> = mutableListOf<String>()
+
+    
+    abstract fun addProject(projectName: String)
+
+    fun printAllProjects() {
+        println("Проекты сотрудника $name: ${projects.joinToString()}")
+    }
+}
+```
+
+Наследники супер класса, поля передаются в конструктор,
+значение полей будут получены снаружи и передадутся в конструктор супер класса
+```kotlin
+class Programmer(name: String, salary: Int): Employee(name,salary){
+    fun readArticle(articleName: String) {
+        println("Программист $name: читаю статью $articleName")
+    }
+
+    fun addProject(projectName: String) {
+        projects.add(projectName)
+        println("Программист ${name}: начал работу над проектом $projectName")
+    }
+}
+```
+
+```kotlin
+class Manager(name: String, salary: Int): Employee(name,salary){
+    fun callToClient(articleName: String) {
+        println("Менеджер $name: звоню клиенту $articleName")
+    }
+
+    fun addProject(projectName: String) {
+        projects.add(projectName)
+        println("Менеджер ${name}: передал работу над проектом $projectName программистам")
+    }
+}
+```
+
+Функция принимает на вход любой объект супер класса, и может примениться для обьектов,
+которые наследуют супер класс, обьект увидит все функции супер класса, но не увидит функции наследников
+```kotlin
+fun some(employee: Employee){
+    
+}
+```
+
+Функция принимает на вход хоть программиста хоть менеджера
+```kotlin
+val programmer1 = Programmer("Kirill", 34232)
+val manager1 = Manager("Oleg", 876687)
+
+some(programmer1)
+some(manager1)
+```
 
 
 
