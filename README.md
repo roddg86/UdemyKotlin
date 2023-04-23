@@ -659,8 +659,8 @@ abstract class Employee(
 значение полей будут получены снаружи и передадутся в конструктор супер класса
 ```kotlin
 class Programmer(name: String, salary: Int): Employee(name,salary){
-    fun readArticle(articleName: String) {
-        println("Программист $name: читаю статью $articleName")
+    fun readArticle(clientName: String) {
+        println("Программист $name: читаю статью $clientName")
     }
 
     fun addProject(projectName: String) {
@@ -672,8 +672,8 @@ class Programmer(name: String, salary: Int): Employee(name,salary){
 
 ```kotlin
 class Manager(name: String, salary: Int): Employee(name,salary){
-    fun callToClient(articleName: String) {
-        println("Менеджер $name: звоню клиенту $articleName")
+    fun callToClient(clientName: String) {
+        println("Менеджер $name: звоню клиенту $clientName")
     }
 
     fun addProject(projectName: String) {
@@ -700,10 +700,78 @@ some(programmer1)
 some(manager1)
 ```
 
+#### 15. Интерфейсы
+
+Множественное наследование от суперклассов запрещено в котлин
+
+От интерфейсов множественное наследование разрешается
+
+Интерфейс это классический абстрактный класс, 
+его не нужно обьявлять как абстрактный он по умолчанию абстрактный,
+функции в нем тоже абстрактные по умолчанию,
+в интерфейсе описаны только заголовки функций без реализации, 
+у него так же нету конструктора потому что объекты этого интерфейса нельзя создавать.
+
+Интерфейс говорит о том что класс наследующий его умеет что-то делать,
+но при этом не является разновидностью какого-то другого класса.
+
+Если класс реализует интерфейс, он обязан выполнить все функции которые описаны в этом интерфейсе
+
+обьявление интерфейса:
+````kotlin
+interface ClientWorker{
+    fun callToClient(clientName: String)
+    fun emailToClient(clientName: String)
+}
+````
 
 
+```kotlin
+class Robot(val id: Int) : ClientWorker{
+    override fun callToClient(clientName: String) {
+        println("Робот $id: звоню клиенту $clientName")
+    }
 
+    override fun emailToClient(clientName: String) {
+        println("Робот $id: отправляю email клиенту $clientName")
+    }
+}
+```
 
+```kotlin
+class Manager(name: String, salary: Int): Employee(name,salary), ClientWorker{
+    override fun callToClient(clientName: String) {
+        println("Менеджер $name: звоню клиенту $articleName")
+    }
+
+    override fun emailToClient(clientName: String) {
+        println("Менеджер $id: отправляю email клиенту $clientName")
+    }
+
+    fun addProject(projectName: String) {
+        projects.add(projectName)
+        println("Менеджер ${name}: передал работу над проектом $projectName программистам")
+    }
+}
+```
+
+создание экземпляров классов, и коллекции классов реализующих наш интерфейс
+```kotlin
+val robot1 = Root(1)
+robot1.callToClient("Kirill")
+
+val manager1 = Manager("Olga", 2345543)
+manager1.callToClient("Kirill")
+
+// коллекция
+val clientWorkers = listOf<ClientWorker>(robot1, manager1)
+
+// все обзовнят клиента
+for (clientWorker in clientWorkers)
+    clientWorker.callToClient("Kirill")
+```
+
+#### 16. Работа с null и null-безопасность в kotlin
 
 
 
