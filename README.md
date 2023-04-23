@@ -773,11 +773,99 @@ for (clientWorker in clientWorkers)
 
 #### 16. Работа с null и null-безопасность в kotlin
 
+null - говорит о том что значение переменной отсутствует
 
+в kotlin нужно четко указывать в типе переменной, хотим ли мы хранить в переменой null.
 
+!! - никогда не будет null, может привести к KotlinNullPointerException
+```kotlin
+rectangle!!.printArea()
+```
 
+добавить вопросительный знак ?, теперь в переменную можно класть любое целое чсло или null,
+такая переменная нулабельна, нулабельный int
+```kotlin
+val childrenCount: Int? = null
+```
 
+если вопросительного знака нет, в переменную можно класть только целое число
+```kotlin
+val childrenCount: Int = 2
+```
 
+нулабельный дабл(Double), можно класть любое дробное число либо null
+```kotlin
+val number: Double? = null
+```
+
+на примере класса, если пользователь отсутствует то делаем переменную нулабельной и ложим в нее null
+
+```kotlin
+fun main(){
+    // если пользователя нет
+    val user: User? = null 
+
+    // если пользователь есть
+    val user: User = User("Kirill")
+}
+
+data class User(val name: String)
+```
+
+правила для null актуальны в любом месте, например при обьявлении полей класса
+```kotlin
+// значение переменной age может отсутствовать
+data class User(val name: String, val age: Int?)
+```
+
+например функция, принимает на вход либо количество либо null
+```kotlin
+fun some(childrenCount: Int?){
+    
+}
+```
+
+**Как работать с переменными в которых может лежать null**
+
+Если значение переемнной отсутсвует, мы может сделать значение перееменной по умолчанию 0, 
+или если значение есть то это будет то самое значение
+```kotlin
+val inputChildrenCount: Int? = 2
+
+// новое значение на основании нулабельной переменной
+val childrenCount = if (inputChildrenCount == null)
+    0
+else
+    inputChildrenCount
+```
+
+более простая конструкция с использованием оператора ?: элвис, эдинтичная условию if из предыдущего примера
+```kotlin
+val childrenCount = inputChildrenCount ?: 0
+```
+
+Если в переменной хранится обьект класса или null нужно делать проверку на null, 
+иначе вызов функции у обьекта будет не возможен
+```kotlin
+fun main(){
+    val rectangle: Rectangle? = null
+ 
+    // проверка на null, через if, идентично ?
+    if(rectangle != null)
+        rectangle.printArea()
+
+    // проверка на null, упрощенный синтаксис через ?, идентично if
+    rectangle?.printArea()
+    
+}
+
+class Rectangle(val a: Int, val b: Int){
+    fun printArea(){
+        val result = a*b
+        println(result)
+    }
+}
+```
 
 
 
