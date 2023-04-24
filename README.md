@@ -867,11 +867,80 @@ class Rectangle(val a: Int, val b: Int){
 }
 ```
 
+#### 17. Работа с Exceptions
+
+try - это значит попытаться
+catch - блок для отлавливания исключительных ситуаций, если в блоке try произошла ошибка
+e: переменная в которой хранится ошибка
 
 
 
+Отлов ошибок
+```kotlin
+val a = 6
+val b = 0
+try {
+    val result = a/b
+    println(result)
+}catch(e: Exception){
+    println(e.toString())
+}
 
+```
 
+Отлавливаем конкретный тип ошибки ArithmeticException
+```kotlin
+val aString = "sdfgsg"
+val b = 0
+try {
+    val a = aString.toInt()
+    val result = a/b
+    println(result)
+}catch(e: ArithmeticException){
+    println(e.toString())
+}
+```
 
+Отлавливаем несколько конкретных типов ошибок, каждую по разному можно обработать,
+для каждой выводим разную информацию в блоке catch.
+```kotlin
+val aString = "sdfgsg"
+val b = 0
+try {
+    val a = aString.toInt()
+    val result = a/b
+    println(result)
+}catch(e: ArithmeticException){
+    println(e.toString())
+}catch(e: NumberFormatException){
+    println(e.toString())
+}
+```
 
+Для того чтобы возбудить исключение явным образом, используйте оператор **throw**.
+
+Пример функции отправки данных на сервер:
+
+```kotlin
+fun main(){
+    val login = "Roman"
+    val password = "gersr34"
+    val confirmPassword = "gersr34"
+    
+    try {
+        signIn(login,password,confirmPassword)
+    }catch (e: Exception){
+        println(e.message)
+    }
+}
+
+fun signIn(login: String, password: String, confirmPassword: String){
+    if(login.length > 20)
+        throw Exception("Логин слишком длинный")
+    if(password.length < 10)
+        throw Exception("Логин слишком длинный")
+    if (password != confirmPassword)
+        throw Exception("Пароль и подтверждение на совпадают")
+}
+```
 
